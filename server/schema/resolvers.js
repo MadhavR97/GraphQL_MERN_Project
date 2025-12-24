@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Post = require('../models/Post');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -11,6 +12,21 @@ const resolvers = {
         throw new Error('Not authenticated');
       }
       return context.user;
+    },
+    
+    posts: async () => {
+      return await Post.find().populate('author').sort({ createdAt: -1 });
+    },
+    
+    post: async (parent, { id }) => {
+      return await Post.findById(id).populate('author');
+    },
+    
+    myPosts: async (parent, args, context) => {
+      if (!context.user) {
+        throw new Error('Not authenticated');
+      }
+      return await Post.find({ author: context.user.userId }).populate('author').sort({ createdAt: -1 });
     },
   },
 
@@ -55,6 +71,70 @@ const resolvers = {
       };
     },
 
+    createPost: async (parent, { title, content }, context) => {
+      if (!context.user) {
+        throw new Error('Not authenticated');
+      }
+      
+      const post = new Post({
+        title,
+        content,
+        author: context.user.userId
+      });
+      
+      const savedPost = await post.save();
+      return await Post.findById(savedPost._id).populate('author');
+    },
+    
+    updatePost: async (parent, { id, title, content, published }, context) => {
+      if (!context.user) {
+        throw new Error('Not authenticated');
+      }
+      
+      const post = await Post.findById(id);
+      
+      if (!post) {
+        throw new Error('Post not found');
+      }
+      
+      // Check if the user owns the post
+      if (post.author.toString() !== context.user.userId) {
+        throw new Error('Not authorized to update this post');
+      }
+      
+      const updatedPost = await Post.findByIdAndUpdate(
+        id,
+        { 
+          ...(title !== undefined && { title }),
+          ...(content !== undefined && { content }),
+          ...(published !== undefined && { published })
+        },
+        { new: true }
+      ).populate('author');
+      
+      return updatedPost;
+    },
+    
+    deletePost: async (parent, { id }, context) => {
+      if (!context.user) {
+        throw new Error('Not authenticated');
+      }
+      
+      const post = await Post.findById(id);
+      
+      if (!post) {
+        throw new Error('Post not found');
+      }
+      
+      // Check if the user owns the post
+      if (post.author.toString() !== context.user.userId) {
+        throw new Error('Not authorized to delete this post');
+      }
+      
+      await Post.findByIdAndDelete(id);
+      return true;
+    },
+    
     login: async (parent, { email, password }) => {
       // Find user by email
       const user = await User.findOne({ email });
