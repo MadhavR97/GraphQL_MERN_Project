@@ -27,9 +27,7 @@ const SignupPage = () => {
 
     const [signup, { loading }] = useMutation(SIGNUP, {
         onCompleted: (data) => {
-            // Store the token in localStorage
             localStorage.setItem('token', data.signup.token);
-            // Redirect to login page after successful signup
             window.location.href = '/auth/login';
         },
         onError: (error) => {
@@ -47,78 +45,83 @@ const SignupPage = () => {
             });
         } catch (err) {
             setError('An error occurred during signup');
-            console.error('Error during signup:', err);
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black p-4 relative overflow-hidden">
-            <div className="absolute inset-0 bg-grid-pattern bg-[length:60px_60px] opacity-10"></div>
-            <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-r from-indigo-900 to-purple-900 rounded-full opacity-40 blur-3xl"></div>
-            <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-r from-cyan-900 to-blue-900 rounded-full opacity-40 blur-3xl"></div>
+        <div className="min-h-screen flex items-center justify-center bg-background p-4 relative overflow-hidden selection:bg-primary/30 selection:text-primary-foreground">
+            {/* Premium background decorations */}
+            <div className="fixed inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute top-[-15%] right-[-5%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[140px]" />
+                <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/10 blur-[120px]" />
+            </div>
 
-            <Card className="w-full max-w-md border-0 bg-gray-900/90 backdrop-blur-lg relative z-10 transition-all duration-500">
-                <CardHeader className="text-center space-y-2 pb-2 pt-8 px-8">
-                    <div className="mx-auto bg-gradient-to-r from-indigo-500 to-purple-500 p-3 rounded-full w-16 h-16 flex items-center justify-center">
-                        <UserIcon className="text-white w-8 h-8" />
+            <Card className="w-full max-w-md border border-border/50 bg-card/50 backdrop-blur-2xl relative z-10 rounded-[2.5rem] shadow-2xl transition-all duration-500 overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 via-primary to-primary/50" />
+
+                <CardHeader className="text-center space-y-2 pb-6 pt-10 px-10">
+                    <div className="mx-auto w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mb-4 shadow-xl shadow-primary/20 -rotate-3 hover:rotate-0 transition-transform duration-500">
+                        <UserIcon className="text-primary-foreground w-8 h-8" />
                     </div>
-                    <CardTitle className="text-2xl font-bold text-white">Join Us Today</CardTitle>
-                    <CardDescription className="text-gray-400">
-                        Create your account to get started
+                    <CardTitle className="text-3xl font-extrabold text-foreground tracking-tight italic">Pulse</CardTitle>
+                    <CardDescription className="text-muted-foreground text-base">
+                        Join the collective. Create your identity
                     </CardDescription>
                 </CardHeader>
+
                 <form onSubmit={handleSubmit}>
-                    <CardContent className="px-8 pb-6">
-                        <div className="space-y-4">
+                    <CardContent className="px-10 pb-6">
+                        <div className="space-y-5">
                             {error && (
-                                <div className="p-3 bg-red-900/50 border border-red-700 rounded-lg text-red-300 text-sm">
+                                <div className="p-4 bg-rose-500/10 border border-rose-500/20 rounded-2xl text-rose-500 text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
                                     {error}
                                 </div>
                             )}
-                            <div className="space-y-2 relative">
-                                <Label htmlFor="username" className="text-gray-300 text-sm font-medium">Username</Label>
-                                <div className="relative">
-                                    <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+
+                            <div className="space-y-2">
+                                <Label htmlFor="username" className="text-foreground text-xs font-bold uppercase tracking-widest ml-1">Identity Handle</Label>
+                                <div className="relative group">
+                                    <UserIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 group-focus-within:text-primary transition-colors" />
                                     <Input
                                         id="username"
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
                                         placeholder="johndoe"
-                                        className="pl-10 py-5 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500 transition-all duration-300 bg-gray-800"
+                                        className="pl-11 h-12 rounded-xl bg-secondary/50 border-border focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
                                     />
                                 </div>
                             </div>
 
-                            <div className="space-y-2 relative">
-                                <Label htmlFor="email" className="text-gray-300 text-sm font-medium">Email</Label>
-                                <div className="relative">
-                                    <MailIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                            <div className="space-y-2">
+                                <Label htmlFor="email" className="text-foreground text-xs font-bold uppercase tracking-widest ml-1">Neural Mail</Label>
+                                <div className="relative group">
+                                    <MailIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 group-focus-within:text-primary transition-colors" />
                                     <Input
                                         id="email"
                                         type="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="name@example.com"
-                                        className="pl-10 py-5 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500 transition-all duration-300 bg-gray-800"
+                                        className="pl-11 h-12 rounded-xl bg-secondary/50 border-border focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
                                     />
                                 </div>
                             </div>
 
-                            <div className="space-y-2 relative">
-                                <Label htmlFor="password" className="text-gray-300 text-sm font-medium">Password</Label>
-                                <div className="relative">
-                                    <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                            <div className="space-y-2">
+                                <Label htmlFor="password" className="text-foreground text-xs font-bold uppercase tracking-widest ml-1">Secure Vault Key</Label>
+                                <div className="relative group">
+                                    <LockIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 group-focus-within:text-primary transition-colors" />
                                     <Input
                                         id="password"
                                         type={showPassword ? "text" : "password"}
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder="••••••••"
-                                        className="pl-10 pr-10 py-5 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500 transition-all duration-300 bg-gray-800"
+                                        className="pl-11 h-12 rounded-xl bg-secondary/50 border-border focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
                                     />
                                     <button
                                         type="button"
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-300"
+                                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                                         onClick={() => setShowPassword(!showPassword)}
                                     >
                                         {showPassword ? <EyeOffIcon className="w-4 h-4" /> : <EyeIcon className="w-4 h-4" />}
@@ -127,18 +130,20 @@ const SignupPage = () => {
                             </div>
                         </div>
                     </CardContent>
-                    <CardFooter className="flex flex-col gap-4 px-8 pb-8">
+
+                    <CardFooter className="flex flex-col gap-6 px-10 pb-10">
                         <Button
                             type="submit"
-                            className="w-full py-6 text-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300"
+                            className="w-full h-14 text-base font-bold bg-primary text-primary-foreground rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
                             disabled={loading}
                         >
-                            {loading ? 'Creating Account...' : 'Create Account'}
+                            {loading ? 'Initializing...' : 'Establish Identity'}
                         </Button>
-                        <div className="text-center text-sm text-gray-400 pt-2 transition-colors duration-300">
-                            Already have an account?{' '}
-                            <Link href="/auth/login" className="text-indigo-400 hover:underline font-semibold pl-1 transition-colors duration-300">
-                                Sign in
+
+                        <div className="text-center text-sm text-muted-foreground">
+                            Already part of the collective?{' '}
+                            <Link href="/auth/login" className="text-primary hover:text-primary/80 font-extrabold transition-colors underline decoration-primary/20 underline-offset-4">
+                                Sign In
                             </Link>
                         </div>
                     </CardFooter>
