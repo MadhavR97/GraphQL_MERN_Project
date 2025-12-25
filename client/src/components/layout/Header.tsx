@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { UserIcon, MenuIcon, LogOutIcon, Activity } from 'lucide-react';
 
+import { ThemeToggle } from '@/components/ThemeToggle';
+
 interface HeaderProps {
     sidebarOpen: boolean;
     setSidebarOpen: (open: boolean) => void;
@@ -55,6 +57,8 @@ export function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
                         <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse" />
                         {isClient ? currentTime : '00:00'}
                     </div>
+                    <div className="h-6 w-px bg-border hidden md:block" />
+                    <ThemeToggle />
                     <div className="h-6 w-px bg-border hidden md:block" />
                     <div className="flex items-center space-x-3 group cursor-pointer">
                         <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center border border-border group-hover:border-primary/50 transition-colors">
