@@ -7,16 +7,16 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { gql, useQuery, useMutation, useLazyQuery } from '@apollo/client';
-import { 
-  UserIcon, 
-  MenuIcon, 
-  HomeIcon, 
-  SettingsIcon, 
-  LogOutIcon, 
-  BarChart3, 
-  Users, 
-  Bell, 
-  ChevronLeft, 
+import {
+  UserIcon,
+  MenuIcon,
+  HomeIcon,
+  SettingsIcon,
+  LogOutIcon,
+  BarChart3,
+  Users,
+  Bell,
+  ChevronLeft,
   ChevronRight,
   Plus,
   Edit,
@@ -83,9 +83,9 @@ export default function PostsPage() {
   const [newPost, setNewPost] = useState({ title: '', content: '', published: false });
   const [editingPost, setEditingPost] = useState<any>(null);
   const [editForm, setEditForm] = useState({ title: '', content: '', published: false });
-  
+
   const { loading, error, data, refetch } = useQuery(GET_MY_POSTS);
-  
+
   const [createPostMutation] = useMutation(CREATE_POST);
   const [updatePostMutation] = useMutation(UPDATE_POST);
   const [deletePostMutation] = useMutation(DELETE_POST);
@@ -93,7 +93,7 @@ export default function PostsPage() {
   useEffect(() => {
     setIsClient(true);
     setCurrentTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-    
+
     // Check if user is authenticated
     const token = localStorage.getItem('token');
     if (!token) {
@@ -125,7 +125,7 @@ export default function PostsPage() {
           content: newPost.content
         }
       });
-      
+
       if (data) {
         refetch(); // Refetch to update the list
         setNewPost({ title: '', content: '', published: false });
@@ -147,7 +147,7 @@ export default function PostsPage() {
           published: editForm.published
         }
       });
-      
+
       if (data) {
         refetch(); // Refetch to update the list
         setEditingPost(null);
@@ -165,7 +165,7 @@ export default function PostsPage() {
             id
           }
         });
-        
+
         refetch(); // Refetch to update the list
       } catch (error) {
         console.error('Error deleting post:', error);
@@ -555,35 +555,30 @@ export default function PostsPage() {
                           </p>
                         </div>
                         <div className="flex space-x-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
+                          <button
                             onClick={() => handleEditClick(post)}
-                            className="border-gray-600 text-white hover:bg-gray-700 flex items-center px-3 py-1"
+                            className="flex items-center px-3 py-2 bg-transparent border border-blue-500 text-blue-400 hover:bg-blue-500/20 hover:border-blue-400 hover:text-blue-300 rounded-md transition-colors duration-300"
                           >
                             <Edit className="w-4 h-4 mr-1" />
                             <span className="font-medium">Edit</span>
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
+                          </button>
+                          <button
                             onClick={() => handleDeletePost(post.id)}
-                            className="border-red-600 text-red-400 hover:bg-red-600/20 flex items-center px-3 py-1"
+                            className="flex items-center px-3 py-2 bg-transparent border border-red-500 text-red-400 hover:bg-red-500/20 hover:border-red-400 hover:text-red-300 rounded-md transition-colors duration-300"
                           >
                             <Trash2 className="w-4 h-4 mr-1" />
                             <span className="font-medium">Delete</span>
-                          </Button>
+                          </button>
                         </div>
                       </div>
                     </CardHeader>
                     <CardContent>
                       <p className="text-gray-300 mb-4">{post.content}</p>
                       <div className="flex items-center">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          post.published 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-yellow-100 text-yellow-800'
-                        }`}>
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${post.published
+                            ? 'bg-green-900/30 text-green-400 border border-green-700'
+                            : 'bg-yellow-900/30 text-yellow-400 border border-yellow-700'
+                          }`}>
                           {post.published ? 'Published' : 'Draft'}
                         </span>
                       </div>
